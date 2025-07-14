@@ -40,13 +40,14 @@ export function ListPage({ items, onItemPress, refreshing, onRefresh }: ListPage
     >
       {items.map((item, index) => {
         const imgSrc = iconMap[item.icon_desc as keyof typeof iconMap]
+        const isLastItem = index === items.length - 1
         return (
           <TouchableOpacity key={index} onPress={() => onItemPress?.(item)} activeOpacity={0.7}>
-            <ThemedView style={styles.listItem}>
+            <ThemedView style={[styles.listItem, isLastItem && styles.lastListItem]}>
               {/* 第一行：序号 + 标题 + 图标 */}
               <ThemedView style={styles.titleRow}>
                 <ThemedText style={styles.number}>{index + 1}</ThemedText>
-                <ThemedText style={styles.title} numberOfLines={1}>
+                <ThemedText style={styles.title} numberOfLines={2}>
                   {item.word}
                 </ThemedText>
                 {imgSrc && <Image source={{ uri: imgSrc }} style={{ width: 28, height: 28 }} />}
@@ -86,6 +87,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     gap: 8,
   },
+  lastListItem: {
+    borderBottomWidth: 0,
+  },
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -97,8 +101,8 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   title: {
-    // flex: 1,
-    fontSize: 18,
+    flex: 1,
+    fontSize: 16,
     fontWeight: '600',
   },
   icon: {},
