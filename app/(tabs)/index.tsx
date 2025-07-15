@@ -5,13 +5,11 @@ import { ListItem, ListPage } from '@/components/ListPage'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { TZDate } from '@date-fns/tz'
 
 function getData() {
   return fetch(
-    `https://api-hotop.llweb.top/wb/https://raw.githubusercontent.com/sunven/hotop/refs/heads/dev/api/${format(
-      Date.now(),
-      'yyyy-MM-dd'
-    )}.json`
+    `https://api-hotop.llweb.top/wb/https://raw.githubusercontent.com/sunven/hotop/refs/heads/dev/api/${format(new TZDate(Date.now(), "Asia/Shanghai"), 'yyyy-MM-dd')}.json`
   )
     .then(res => res.json())
     .then((data: any[]) => {
