@@ -3,24 +3,17 @@ import { StyleSheet, ScrollView, TouchableOpacity, Image, RefreshControl } from 
 import { ThemedView } from '@/components/ThemedView'
 import { ThemedText } from '@/components/ThemedText'
 
-const iconMap = {
-  热: 'https://simg.s.weibo.com/moter/flags/1_0.png',
-  新: 'https://simg.s.weibo.com/moter/flags/2_0.png',
-}
-
-export interface ListItem {
-  word?: string
-  word_scheme?: string
-  num?: number
-  icon_desc?: string
-  rank?: string
+export interface Item {
+  title: string
+  icon?: string
+  scheme: string
   category?: string
   description?: string
 }
 
 interface ListPageProps {
-  items: ListItem[]
-  onItemPress?: (item: ListItem) => void
+  items: Item[]
+  onItemPress?: (item: Item) => void
   refreshing?: boolean
   onRefresh?: () => void
 }
@@ -39,7 +32,6 @@ export function ListPage({ items, onItemPress, refreshing, onRefresh }: ListPage
       }
     >
       {items.map((item, index) => {
-        const imgSrc = iconMap[item.icon_desc as keyof typeof iconMap]
         const isLastItem = index === items.length - 1
         return (
           <TouchableOpacity key={index} onPress={() => onItemPress?.(item)} activeOpacity={0.7}>
@@ -48,26 +40,26 @@ export function ListPage({ items, onItemPress, refreshing, onRefresh }: ListPage
               <ThemedView style={styles.titleRow}>
                 <ThemedText style={styles.number}>{index + 1}</ThemedText>
                 <ThemedText style={styles.title} numberOfLines={2}>
-                  {item.word}
+                  {item.title}
                 </ThemedText>
-                {imgSrc && <Image source={{ uri: imgSrc }} style={{ width: 28, height: 28 }} />}
+                {item.icon && <Image source={{ uri: item.icon }} style={{ width: 28, height: 28 }} />}
               </ThemedView>
 
               {/* 第二行：标签 */}
-              {item.category && (
+              {/* {item.category && (
                 <ThemedView style={styles.tagsContainer}>
                   <ThemedView style={styles.tag}>
                     <ThemedText style={styles.tagText}>{item.category}</ThemedText>
                   </ThemedView>
                 </ThemedView>
-              )}
+              )} */}
 
               {/* 第三行：摘要 */}
-              {item.description && (
+              {/* {item.description && (
                 <ThemedText style={styles.summary} numberOfLines={2}>
                   {item.description}
                 </ThemedText>
-              )}
+              )} */}
             </ThemedView>
           </TouchableOpacity>
         )

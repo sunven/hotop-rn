@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
-import { ListItem, ListPage } from '@/components/ListPage'
+import { Item, ListPage } from '@/components/ListPage'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
@@ -9,16 +9,12 @@ import { TZDate } from '@date-fns/tz'
 
 function getData() {
   return fetch(
-    `https://api-hotop.llweb.top/wb/https://raw.githubusercontent.com/sunven/hotop/refs/heads/dev/api/${format(new TZDate(Date.now(), "Asia/Shanghai"), 'yyyy-MM-dd')}.json`
+    `https://api-hotop.llweb.top/wb/https://raw.githubusercontent.com/sunven/hotop/refs/heads/dev/api/${format(
+      new TZDate(Date.now(), 'Asia/Shanghai'),
+      'yyyy-MM-dd'
+    )}.json`
   )
     .then(res => res.json())
-    .then((data: any[]) => {
-      return data
-        .filter((c: any) => !['明星', '电视剧', '综艺'].some(a => c.category.includes(a)))
-        .filter((c: any) => !['商业投放', '资源投放'].includes(c.ad_type))
-        .filter((c: any) => !['综艺', '剧集', '盛典'].includes(c.flag_desc))
-        .filter((c: any) => !['商'].includes(c.icon_desc))
-    })
     .catch(err => {
       console.error('获取数据失败:', err)
       return []
@@ -26,7 +22,7 @@ function getData() {
 }
 
 export default function HomeScreen() {
-  const [items, setItems] = useState<ListItem[]>([])
+  const [items, setItems] = useState<Item[]>([])
   const [refreshing, setRefreshing] = useState(false)
 
   const loadData = async () => {
@@ -48,7 +44,7 @@ export default function HomeScreen() {
     loadData()
   }, [])
 
-  const handleItemPress = (item: ListItem) => {
+  const handleItemPress = (item: Item) => {
     // Alert.alert('项目选中', `你选择了: ${item.title}`);
   }
   return (
